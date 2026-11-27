@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Galeri Arsip Kota Medan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: tenang, berwibawa, seperti ruang baca arsip kota.
+   IDEA: museum foto kolonial yang bisa dimasuki — ruang pamer 360° bergaya tur virtual, lalu lemari katalog arsip.
+   PICTURE: ruang galeri 3D berlantai tegel kolonial dengan foto berbingkai di dinding; geser untuk berputar.
+   COLOUR and TYPE: hijau-tinta Deli #0e2f36 dominan, kertas foto pucat, aksen merah peta 1935; Bodoni Moda + Source Sans 3.
+   LAYOUT: navigasi, tur virtual layar lebar, katalog dengan cari & filter, tentang, kaki halaman; lightbox detail arsip. */
+:root{color-scheme:light dark;--bg:light-dark(#f7f4ee,#0b1a1e);--ink:light-dark(#1a2224,#ebe5d8);--mute:light-dark(#5d6866,#a6b0ac);--card:light-dark(#ffffff,#12262b);--line:light-dark(#ddd6c8,#24393e);--deep:#0e2f36;--paper:#efe7d6;--red:#d63a2f;--gold:#b89552}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Source Sans 3",system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:"Bodoni Moda",Georgia,serif;font-weight:700;line-height:1.08;text-wrap:balance;margin:0}
+a{color:inherit}
+button,select,input{font:inherit;font-size:16px}
+:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.band{padding:clamp(28px,4vw,64px) max(5vw,16px)}
+.wrap{max-width:1240px;margin:0 auto}
+/* nav */
+.nav{position:sticky;top:0;z-index:40;background:var(--deep);color:var(--paper);display:flex;align-items:center;gap:16px;padding:10px max(5vw,16px);flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;margin-right:auto}
+.brand svg{flex:none}
+.brand b{font-family:"Bodoni Moda",serif;font-size:19px;line-height:1.1}
+.brand small{display:block;font-size:13px;opacity:.75}
+.nav nav{display:flex;gap:4px;flex-wrap:wrap}
+.nav nav a{text-decoration:none;padding:10px 14px;border-radius:999px;font-weight:600;min-height:44px;display:inline-flex;align-items:center}
+.nav nav a:hover,.nav nav a.on{background:rgba(239,231,214,.14)}
+/* tour */
+.tour{background:var(--deep);color:var(--paper);padding:0}
+.stage{position:relative;height:calc(100svh - 64px);min-height:480px;overflow:hidden;background:#071417;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+.ovb{position:absolute;top:14px;left:16px;z-index:5;display:flex;gap:12px;align-items:center;pointer-events:none;text-shadow:0 2px 8px rgba(0,0,0,.8)}
+.ovb svg{flex:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,.6))}
+.ovb small{display:block;font-weight:700;color:#f28a5b;font-size:15px}
+.ovb b{display:block;font:700 clamp(20px,2.4vw,30px)/1.05 "Bodoni Moda",serif;color:#ff7b4a}
+.cta{position:absolute;top:14px;right:14px;z-index:9;background:#f06a35;color:#fff;border:0;border-radius:10px;padding:10px 18px 10px 16px;font-weight:700;line-height:1.15;text-align:left;box-shadow:7px 7px 0 #071417;cursor:pointer;font-size:15px}
+.cta b{display:block;font-size:22px}
+.credit{position:absolute;right:18px;bottom:122px;z-index:5;text-align:right;pointer-events:none;text-shadow:0 2px 8px rgba(0,0,0,.9);max-width:380px}
+.credit b{display:block;font:700 26px/1.1 "Bodoni Moda",serif;padding-bottom:6px;border-bottom:2px solid var(--paper);margin-bottom:6px}
+.credit span{display:block;font-size:15px;font-weight:600}
+.sarr{position:absolute;bottom:30px;z-index:6;width:36px;height:44px;border:0;background:transparent;color:var(--paper);font-size:30px;cursor:pointer}
+.sarr.l{left:2px}.sarr.r{right:2px}
+.hs{display:flex;gap:34px;justify-content:center}
+.dia{width:62px;height:62px;transform:rotate(45deg);background:#1c3f7a;border:3px solid #e8eefb;border-radius:4px;display:grid;place-items:center;cursor:pointer;box-shadow:0 0 0 0 rgba(232,238,251,.6);animation:pulse2 2.2s infinite;padding:0}
+.dia span{transform:rotate(-45deg);display:grid}
+@keyframes pulse2{70%{box-shadow:0 0 0 18px rgba(232,238,251,0)}100%{box-shadow:0 0 0 0 rgba(232,238,251,0)}}
+.im{position:fixed;inset:0;z-index:65;background:rgba(5,14,16,.55);display:none;place-items:center;padding:16px}
+.im.open{display:grid}
+.ibx{background:#fff;color:#2a2a2a;max-width:620px;width:100%;max-height:86vh;overflow:auto;padding:26px clamp(18px,5vw,64px) 30px;position:relative}
+.ibx h2{text-align:center;color:#1c3f7a;font:400 44px/1.1 "Source Sans 3",sans-serif;margin-bottom:16px}
+.ibx .mt{text-align:center;font-weight:700;line-height:1.55;margin-bottom:16px}
+.ibx p{text-align:justify;margin:0 0 14px}
+.ibx .x2{position:absolute;top:8px;right:8px;width:44px;height:44px;border:0;background:#1c3f7a;color:#fff;font-size:20px;cursor:pointer}
+.ibx .acts{justify-content:center;margin-top:8px}
+.ibx .btn.ghost{color:#1c3f7a}
+.cap{display:none}
+.stage.drag{cursor:grabbing}
+.cam{position:absolute;inset:0;transform-style:preserve-3d;pointer-events:none}
+.room{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d}
+.wall{position:absolute;pointer-events:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;backface-visibility:hidden;padding:24px 60px 60px;background:radial-gradient(ellipse 46% 40% at 50% 8%,rgba(255,240,200,.28),transparent 70%),linear-gradient(to bottom,transparent 76%,var(--trim) 76%,var(--trim) 77.2%,var(--wain) 77.2%),var(--wc)}
+.frame{background:#1b1612;padding:14px;border:4px solid var(--gold);box-shadow:0 26px 40px rgba(0,0,0,.45),inset 0 0 0 3px #3b2c1b;cursor:pointer;position:relative}
+.frame img{display:block;max-width:600px;max-height:350px;width:auto;height:auto;background:#d9d1bf;border:12px solid #f4efe3}
+.plate{background:#f4efe3;color:#1a2224;padding:8px 18px;border-radius:3px;text-align:center;box-shadow:0 6px 12px rgba(0,0,0,.25);max-width:620px}
+.plate b{display:block;font:700 22px/1.2 "Bodoni Moda",serif}
+.plate span{font-size:17px;color:#4a5452}
+.info{color:var(--paper);text-align:center;max-width:760px}
+.info h2{font-size:56px;margin-bottom:14px}
+.info p{font-size:24px;line-height:1.45;opacity:.9;margin:0 0 26px}
+.doors{display:flex;gap:24px;justify-content:center;flex-wrap:wrap}
+.door{width:220px;height:300px;border-radius:110px 110px 6px 6px;background:linear-gradient(#2d1f14,#140d08);border:6px solid var(--gold);color:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font:600 20px/1.2 "Source Sans 3",sans-serif;cursor:pointer;padding:16px}
+.door i{font-style:normal;font-size:44px}
+.floor,.ceil{position:absolute;backface-visibility:visible;pointer-events:none}
+.floor{background:radial-gradient(circle,rgba(0,0,0,0) 20%,rgba(0,0,0,.35) 75%),repeating-conic-gradient(#c9bfa8 0 25%,#7a3f2e 0 50%) 0 0/120px 120px}
+.ceil{background:radial-gradient(circle,#2b3a3a,#0c1414 70%)}
+.hud{position:absolute;z-index:5;display:flex;gap:8px}
+.hud.tl{top:12px;left:12px;flex-direction:column;align-items:flex-start;pointer-events:none}
+.hud.tl b{background:rgba(7,20,23,.78);padding:8px 14px;border-radius:8px;font:700 19px/1.2 "Bodoni Moda",serif}
+.hud.tl span{background:rgba(7,20,23,.6);padding:4px 10px;border-radius:6px;font-size:14px}
+.hud.tr{top:108px;right:14px;flex-direction:column}
+.hud.mid{bottom:118px;left:50%;transform:translateX(-50%)}
+.ib{width:44px;height:44px;border-radius:50%;border:1px solid rgba(239,231,214,.35);background:rgba(7,20,23,.72);color:var(--paper);cursor:pointer;display:grid;place-items:center;font-size:18px}
+.ib.on{background:var(--red);border-color:var(--red)}
+.ib.wide{width:auto;white-space:nowrap;padding:0 18px;border-radius:999px;font-weight:600}
+.hint{position:absolute;inset:auto 0 172px;text-align:center;font-size:15px;opacity:.85;pointer-events:none;transition:opacity .6s}
+.gate{position:absolute;inset:0;z-index:8;display:grid;place-items:center;text-align:center;padding:24px;background:linear-gradient(rgba(7,20,23,.55),rgba(7,20,23,.85)),var(--gate) center/cover;cursor:default}
+.gate h2{font-size:clamp(30px,4vw,48px);margin-bottom:10px}
+.gate p{max-width:50ch;margin:0 auto 22px;opacity:.9}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:10px 22px;border-radius:999px;border:0;background:var(--red);color:#fff;font-weight:700;cursor:pointer;text-decoration:none}
+.btn.ghost{background:transparent;color:inherit;border:1px solid currentColor}
+.scenes{position:absolute;left:0;right:0;bottom:0;z-index:5;display:flex;gap:6px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 40px;background:rgba(7,20,23,.72);scrollbar-width:thin;cursor:default}
+.scene{flex:none;scroll-snap-align:start;width:160px;border:2px solid transparent;overflow:hidden;background:#123840;color:var(--paper);cursor:pointer;padding:0;text-align:left;position:relative}
+.scene.on{border-color:#f06a35}
+.scene img{display:block;width:100%;height:88px;object-fit:cover;filter:sepia(.25)}
+.scene span{position:absolute;left:0;right:0;bottom:0;padding:16px 8px 5px;font-size:13px;line-height:1.2;font-weight:700;background:linear-gradient(transparent,rgba(0,0,0,.85))}
+/* catalog */
+.cathead{display:flex;flex-wrap:wrap;gap:10px 30px;align-items:end;margin-bottom:22px}
+.cathead h2{font-size:clamp(32px,3.6vw,44px);flex:1 1 300px}
+.cathead p{margin:0;color:var(--mute);flex:1 1 320px;max-width:60ch}
+.tools{display:grid;grid-template-columns:minmax(0,2fr) repeat(4,minmax(0,1fr)) minmax(0,1fr);gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
+.tools label{display:flex;flex-direction:column;font-size:13px;color:var(--mute);font-weight:600;gap:4px}
+.tools input,.tools select{min-height:44px;border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--bg);color:var(--ink);width:100%}
+.meta-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin:16px 0}
+.count{color:var(--mute)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 14px;min-height:36px;cursor:pointer;font-size:14px}
+.chip.on{background:var(--deep);color:var(--paper);border-color:var(--deep)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;text-align:left;padding:0;color:inherit;transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(0,0,0,.14)}
+.ph{position:relative;aspect-ratio:4/3;background:#d9d1bf;overflow:hidden}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.wm{position:absolute;inset:0;pointer-events:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='140'%3E%3Ctext x='10' y='80' transform='rotate(-24 130 70)' font-family='sans-serif' font-size='13' font-weight='700' fill='white' fill-opacity='.28'%3EGALERI ARSIP KOTA MEDAN%3C/text%3E%3C/svg%3E")}
+.reg{position:absolute;left:10px;top:10px;background:rgba(14,47,54,.88);color:var(--paper);font-size:13px;font-weight:700;padding:3px 9px;border-radius:6px}
+.cb{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;flex:1}
+.cb h3{font-size:19px;line-height:1.2}
+.cb small{color:var(--mute);font-size:14px}
+.tag{align-self:flex-start;font-size:13px;font-weight:700;color:var(--red)}
+.empty{padding:40px;text-align:center;border:1px dashed var(--line);border-radius:12px;color:var(--mute)}
+/* about */
+.about{background:var(--deep);color:var(--paper)}
+.cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+.cols h3{font-size:22px;margin-bottom:8px}
+.cols p,.cols li{opacity:.88}
+.cols ul{padding-left:18px;margin:0}
+.about h2{font-size:clamp(30px,3.4vw,42px);margin-bottom:24px}
+footer{background:#071417;color:#a6b0ac;font-size:14px;padding:22px max(5vw,16px);display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+/* lightbox */
+.lb{position:fixed;inset:0;z-index:60;background:rgba(5,14,16,.94);display:none;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);color:var(--paper)}
+.lb.open{display:grid}
+.view{position:relative;overflow:hidden;display:grid;place-items:center;touch-action:none}
+.view{min-height:0;height:100%}.view img{max-width:100%;max-height:100%;transition:transform .25s;transform-origin:center;cursor:zoom-in;user-select:none;-webkit-user-drag:none}
+.view.z img{cursor:grab;transition:none}
+.view .wm{background-size:300px 160px;opacity:.45}
+.vt{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:2}
+.side{background:var(--bg);color:var(--ink);overflow-y:auto;padding:26px 26px 30px}
+.side h2{font-size:clamp(26px,2.6vw,34px);margin:6px 0 4px}
+.side .orig{color:var(--mute);font-style:italic;margin:0 0 16px}
+.side dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 14px;margin:0 0 18px;font-size:15px}
+.side dt{color:var(--mute);font-weight:600}
+.side dd{margin:0;overflow-wrap:anywhere}
+.ctx{border-left:3px solid var(--red);padding-left:14px;margin:0 0 18px}
+.acts{display:flex;flex-wrap:wrap;gap:8px}
+.side .acts .btn.ghost{color:var(--ink)}
+.x{position:absolute;top:12px;right:12px;z-index:3}
+.nv{position:absolute;top:50%;transform:translateY(-50%);z-index:2}
+.nv.p{left:10px}.nv.n{right:10px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--deep);color:var(--paper);padding:10px 18px;border-radius:8px;z-index:70;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.on{opacity:1}
+@media(max-width:900px){.tools{grid-template-columns:repeat(2,minmax(0,1fr))}.tools .q{grid-column:1/-1}.cols{grid-template-columns:1fr}.lb{grid-template-columns:1fr;grid-template-rows:52vh minmax(0,1fr)}}
+.lb.solo{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr)}.lb.solo .view img{max-height:calc(100vh - 60px)}.lb.solo .side{display:none}
+.lb.solo .cap{display:block;position:absolute;left:0;right:0;bottom:0;padding:12px 16px;background:rgba(0,0,0,.65);font-size:15px;z-index:1}
+.lb.solo .vt{bottom:60px}
+@media(max-width:600px){.nav{padding:8px 12px}.brand small{display:none}.nav nav a{padding:8px 10px}.stage{height:calc(100svh - 108px);min-height:460px}.credit{display:none}.ovb svg{width:40px;height:40px}.ovb small{font-size:13px}.cta{padding:8px 12px;font-size:13px}.cta b{font-size:17px}.ovb{max-width:58%}.hud.tr{top:92px}.scene{width:120px}.scene img{height:70px}.hud.mid{bottom:100px}.hint,.hud.tl{display:none}.grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}.cb h3{font-size:17px}.side{padding:18px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}.card{transition:none}}
+</style>
+</head>
+<body>
+<header class="nav">
+  <a class="brand" href="#tur" aria-label="Galeri Arsip Kota Medan, beranda">
+    <svg width="38" height="38" viewBox="0 0 40 40" aria-hidden="true"><rect x="2" y="2" width="36" height="36" rx="6" fill="none" stroke="#b89552" stroke-width="2.5"/><path d="M8 31h24M10 31V17M16 31V17M24 31V17M30 31V17M7 16l13-8 13 8z" stroke="#efe7d6" stroke-width="2.2" fill="none" stroke-linejoin="round"/></svg>
+    <span><b>Galeri Arsip Kota Medan</b><small>Era Kolonial · 1880–1937</small></span>
+  </a>
+  <nav aria-label="Navigasi utama"><a href="#tur">Tur Virtual</a><a href="#katalog">Katalog Arsip</a><a href="#tentang">Tentang</a></nav>
+</header>
+
+<main>
+<section class="tour" id="tur">
+  <div class="stage" id="stage" aria-label="Ruang galeri virtual 360 derajat">
+    <div class="cam" id="cam"><div class="room" id="room"></div></div>
+    <div class="ovb">
+      <svg width="58" height="58" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18.5" fill="#efe7d6" stroke="#b89552" stroke-width="2"/><path d="M9 30h22M11 30V18M16.5 30V18M23.5 30V18M29 30V18M8 17l12-7.5L32 17z" stroke="#0e2f36" stroke-width="2.2" fill="none" stroke-linejoin="round"/></svg>
+      <div><small>Galeri Virtual · Pendidikan Sejarah</small><b>Arsip Kota Medan<br>Era Kolonial</b></div>
+    </div>
+    <button class="cta" id="cta"><b>Klik di sini</b>Buka E-Katalog ➜</button>
+    <div class="credit"><b>Merawat Jejak, Menjaga Ingatan</b><span>Kurator: Rosmaida Sinaga</span><span>Jurusan Pendidikan Sejarah FIS UNIMED · 2026</span></div>
+    <div class="hud tl" style="top:auto;bottom:122px;left:16px"><b id="rname">Ruang</b><span id="rpos">Ruang 1 dari 6</span></div>
+    <div class="hud tr">
+      <button class="ib on" id="auto" title="Putar otomatis" aria-label="Putar otomatis" aria-pressed="true">⟳</button>
+      <button class="ib" id="zin" title="Perbesar" aria-label="Perbesar">+</button>
+      <button class="ib" id="zout" title="Perkecil" aria-label="Perkecil">−</button>
+      <button class="ib" id="fs" title="Layar penuh" aria-label="Layar penuh">⤢</button>
+    </div>
+    <div class="hud mid">
+      <button class="ib" id="prevW" aria-label="Bingkai sebelumnya">‹</button>
+      <button class="ib wide" id="openW">Buka arsip</button>
+      <button class="ib" id="nextW" aria-label="Bingkai berikutnya">›</button>
+    </div>
+    <div class="hint" id="hint">Seret untuk melihat sekeliling ruangan</div>
+    <div class="gate" id="gate">
+      <div>
+        <h2>Galeri Arsip Digital Kota Medan Era Kolonial</h2>
+        <p>Merawat jejak, menjaga ingatan, dan melestarikan memori kolektif. Masuki enam ruang pamer berisi 40 foto dan peta Medan 1880–1937 dari Digital Collections Universiteit Leiden (KITLV). Geser layar untuk melihat sekeliling, ketuk ikon wajik untuk membaca info atau melihat gambar.</p>
+        <button class="btn" id="enter">Masuk galeri →</button>
+      </div>
+    </div>
+    <div class="scenes" id="scenes" aria-label="Daftar ruang pamer"></div>
+    <button class="sarr l" id="sl" aria-label="Geser daftar ruang ke kiri">‹</button>
+    <button class="sarr r" id="sr" aria-label="Geser daftar ruang ke kanan">›</button>
+  </div>
+</section>
+
+<section class="band" id="katalog">
+  <div class="wrap">
+    <div class="cathead">
+      <h2>Katalog arsip</h2>
+      <p>Telusuri seluruh koleksi menurut tahun, lokasi, subjek, atau jenis media. Setiap arsip memuat pratinjau resolusi tinggi, metadata lengkap, dan tanda autentikasi galeri.</p>
+    </div>
+    <div class="tools" role="search">
+      <label class="q">Cari arsip<input id="q" type="search" placeholder="Judul, judul asli, lokasi, nomor registrasi…" autocomplete="off"></label>
+      <label>Tahun<select id="fYear"></select></label>
+      <label>Lokasi<select id="fLoc"></select></label>
+      <label>Subjek<select id="fSub"></select></label>
+      <label>Jenis media<select id="fMed"></select></label>
+      <label>Urutkan<select id="sort"><option value="reg">No. registrasi</option><option value="old">Tahun terlama</option><option value="new">Tahun terbaru</option><option value="az">Judul A–Z</option></select></label>
+    </div>
+    <div class="meta-row"><span class="count" id="count" aria-live="polite"></span><div class="chips" id="active"></div></div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<section class="band about" id="tentang">
+  <div class="wrap">
+    <h2>Tentang galeri</h2>
+    <div class="cols">
+      <div><h3>Kurasi</h3><p>Galeri Arsip Digital Kota Medan Era Kolonial: <em>Merawat Jejak, Menjaga Ingatan dan Melestarikan Memori Kolektif</em>. Disusun oleh Rosmaida Sinaga, Jurusan Pendidikan Sejarah, Fakultas Ilmu Sosial, Universitas Negeri Medan, 2026.</p></div>
+      <div><h3>Sumber koleksi</h3><p>Hampir seluruh arsip berasal dari Digital Collections Universiteit Leiden, terutama koleksi foto KITLV (Koninklijk Instituut voor Taal-, Land- en Volkenkunde). Tautan sumber asli dicantumkan pada setiap arsip.</p><p><a href="https://digitalcollections.universiteitleiden.nl/">digitalcollections.universiteitleiden.nl</a></p></div>
+      <div><h3>Ketentuan penggunaan</h3><ul><li>Gambar diberi tanda air (watermark) galeri untuk menjaga keaslian dan menandai pengelola.</li><li>Untuk riset atau pendidikan, kutip sumber asli dan nomor registrasi galeri (MDN-KOL-xxx).</li><li>Tahun dan judul mengikuti dokumen kurasi; beberapa arsip belum bertahun.</li></ul></div>
+    </div>
+  </div>
+</section>
+</main>
+<footer><span>© 2026 Galeri Arsip Kota Medan Era Kolonial · Pendidikan Sejarah FIS UNIMED</span><span>Koleksi foto: KITLV / Universiteit Leiden</span></footer>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-labelledby="lbT">
+  <div class="view" id="view">
+    <img id="lbImg" alt="" draggable="false">
+    <div class="wm"></div>
+    <button class="ib x" id="lbX" aria-label="Tutup">✕</button>
+    <button class="ib nv p" id="lbP" aria-label="Arsip sebelumnya">‹</button>
+    <button class="ib nv n" id="lbN" aria-label="Arsip berikutnya">›</button>
+    <div class="vt"><button class="ib" id="vz" aria-label="Perbesar gambar">+</button><button class="ib" id="vo" aria-label="Perkecil gambar">−</button></div>
+  </div>
+  <aside class="side" id="side"></aside>
+  <div class="cap" id="cap"></div>
+</div>
+<div class="im" id="im" role="dialog" aria-modal="true" aria-labelledby="imT"><div class="ibx" id="ibx"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+{
+const L='https://digitalcollections.universiteitleiden.nl/view/item/';
+const ROOMS=[
+ {n:'Peta & Lanskap Kota',d:'Peta, foto udara, dan suasana jalan yang memperlihatkan tumbuhnya Medan dari tanah lapang menjadi kota kolonial.',c:'#2f4a43',w:'#1f322d',t:'#b89552'},
+ {n:'Gedung Publik & Pemerintahan',d:'Kantor pos, stasiun, pengadilan, balai kota, dan surat kabar: wajah layanan publik kota kolonial.',c:'#5a2f2a',w:'#3c1f1c',t:'#b89552'},
+ {n:'Ekonomi, Perkebunan & Perbankan',d:'Gedung asosiasi perkebunan, perusahaan dagang, dan Javasche Bank yang menopang ekonomi Deli.',c:'#26405a',w:'#18293b',t:'#b89552'},
+ {n:'Biro Imigran Jawa & Permukiman',d:'Rumah, barak, dan rumah sakit di Glugur dan Kampung Baru — jejak buruh kontrak di balik kemakmuran perkebunan.',c:'#4f4632',w:'#352f21',t:'#b89552'},
+ {n:'Istana & Rumah Ibadah',d:'Istana Sultan Deli, Masjid Raya, kelenteng, dan gereja: keragaman kehidupan religius dan kesultanan.',c:'#3d3354',w:'#282238',t:'#b89552'},
+ {n:'Malam Perayaan',d:'Gedung-gedung Medan bermandikan lampu hias untuk merayakan pernikahan Putri Juliana dan Pangeran Bernhard.',c:'#1d2433',w:'#121722',t:'#b89552'}];
+// [no, judul, judul asli, tahun, lokasi, subjek(room idx), media, koleksi, sumber id, konteks]
+const RAW=[
+[1,'Peta Kota Medan Tahun 1928','',1928,'Kota Medan',0,'Peta','Peta kolonial','','Peta tata kota Medan akhir 1920-an, saat kota berkembang pesat sebagai pusat administrasi dan bisnis perkebunan Sumatra Timur.'],
+[2,'Peta Kota Medan Tahun 1935','',1935,'Kota Medan',0,'Peta','Peta kolonial','2011712','Peta berwarna yang memperlihatkan blok-blok kota dan jaringan jalan Medan pada pertengahan 1930-an; dapat dibandingkan dengan peta 1928 untuk melihat perluasan kota.'],
+[3,'Kantor Pos Medan Tahun 1905','KITLV A702 - Post- en telegraafkantoor te Medan',1905,'Lapangan Esplanade',1,'Foto','KITLV A702','914759','Kantor pos dan telegraf di tepi Esplanade, simpul komunikasi kota yang menghubungkan perkebunan Deli dengan Batavia dan Eropa.'],
+[4,'Hotel De Boer dan Kantor Pos Medan Tahun 1910','KITLV A702 - Post- en telegraafkantoor te Medan',1910,'Lapangan Esplanade',1,'Foto','KITLV A702','914759','Pemandangan jalan dengan Hotel De Boer dan kantor pos, dua bangunan penting di sekitar alun-alun kota kolonial.'],
+[5,'Bioskop Deli','KIT KITLV A691 - Esplanade te Medan',null,'Lapangan Esplanade',1,'Foto','KITLV A691','','Bangunan di kawasan Esplanade yang dalam dokumen kurasi diidentifikasi sebagai Bioskop Deli, bagian dari ruang hiburan warga kota.'],
+[6,'Lapangan (Taman) Terbuka di Medan Tahun 1890','',1890,'Lapangan Esplanade',0,'Foto','KITLV','919927','Lapangan terbuka di jantung Medan akhir abad ke-19, ketika kota masih dikelilingi pepohonan besar dan bangunan masih jarang.'],
+[7,'Stasiun Medan Tahun 1890','KITLV A691 - Station te Medan',1890,'Lapangan Esplanade',1,'Foto','KITLV A691','918470','Stasiun kereta api Medan pada masa awal jaringan rel di Deli, yang dibangun untuk mengangkut hasil perkebunan ke pelabuhan.'],
+[8,'Gedung AVROS Medan Tahun 1931','KITLV A265 - Het AVROS-gebouw (Algemene Vereniging van Rubberplanters ter Oostkust van Sumatra) te Medan',1931,'Pusat Kota',2,'Foto','KITLV A265','766518','Gedung AVROS, perhimpunan umum para pekebun karet di Pantai Timur Sumatra, simbol kuatnya industri karet di Medan.'],
+[9,'Foto Udara Kawasan AVROS Kota Medan Tahun 1935','Luchtfoto van het AVROS-gebouw (Algemene Vereniging van Rubberplanters ter Oostkust van Sumatra) te Medan',1935,'Pusat Kota',0,'Foto Udara','KITLV','839489','Foto udara yang memperlihatkan Gedung AVROS di tengah kepadatan bangunan dan pepohonan kota Medan tahun 1930-an.'],
+[10,'Gedung di Medan Tahun 1900','KITLV A491 - Gebouw te Medan',1900,'Pusat Kota',2,'Foto','KITLV A491','915596','Bangunan bergaya neoklasik dengan pilar dan kanopi jendela, contoh arsitektur kolonial awal abad ke-20 di Medan.'],
+[11,'Laboratorium Pathologi AVROS dan DPV di Medan Tahun 1921','KITLV A891 - Pathologisch laboratorium van AVROS en DPV te Medan',1921,'Pusat Kota',2,'Foto','KITLV A891','924576','Laboratorium patologi milik AVROS dan Deli Planters Vereeniging (DPV), tempat penelitian penyakit tanaman perkebunan.'],
+[12,'Gedung Perusahaan Dagang Belanda di Medan Tahun 1927','Gebouw van de Handels Vereeniging Amsterdam te Medan',1927,'Pusat Kota',2,'Foto','KITLV','791290','Kantor Handels Vereeniging Amsterdam (HVA), perusahaan dagang dan perkebunan Belanda yang beroperasi di Sumatra Timur.'],
+[13,'Gedung Dewan Keadilan (Lembaga Pengadilan) di Medan Tahun 1937','KITLV A531 - Gebouw van de Raad van Justitie te Medan',1937,'Pusat Kota',1,'Foto','KITLV A531','695459','Gedung Raad van Justitie, lembaga peradilan kolonial di Medan.'],
+[14,'Jalan di Medan dengan Kantor AVROS dan Kafe-Restoran Ter Meulen Tahun 1925','Straat te Medan met links het kantoor van de AVROS en rechts cafe-restaurant Ter Meulen',1925,'Kesawan',0,'Foto','KITLV','789765','Suasana jalan kota dengan kantor AVROS di kiri dan kafe-restoran Ter Meulen di kanan, memperlihatkan kehidupan niaga Medan.'],
+[15,'Gedung dan Pegawai Sumatra Post dan Pertja Timor di Medan Tahun 1908','Gebouw en personeel van de Sumatra Post en Pertja Timor te Medan',1908,'Pusat Kota',1,'Kartu Pos','KITLV','837614','Kantor dan para pegawai surat kabar Sumatra Post dan Pertja Timor, dua media cetak yang terbit di Medan awal abad ke-20.'],
+[16,'Rumah Pegawai Eropa Balai Penelitian Umum AVROS, Kampung Baru, Tahun 1920','KITLV A440 - Woning voor Europees personeel van het Algemeen Proefstation van de A.V.R.O.S. te Kampong Baroe bij Medan',1920,'Kampung Baru',3,'Foto','KITLV A440','909030','Rumah dinas bagi pegawai Eropa di stasiun percobaan umum AVROS di Kampung Baru, dekat Medan.'],
+[17,'Gedung Tjong A Fie di Jl. Ahmad Yani, Kesawan Tahun 1905','KITLV A299 - Tjong Afie gebouw te Kesawan (nu Jl. Ahmad Yani)',1905,'Kesawan',2,'Foto','KITLV A299','908671','Kediaman Tjong A Fie, saudagar Tionghoa terkemuka Medan, dengan gerbang bergaya Tionghoa di kawasan Kesawan.'],
+[18,'Rumah Dinas Pegawai Biro Imigran Jawa di Glugur Tahun 1925','KITLV A112 - Woningen voor personeel, vermoedelijk op het Java Immigranten Bureau (J.I.B.) te Gloegoer nabij Medan',1925,'Glugur',3,'Foto','KITLV A112','890843','Deretan rumah pegawai yang diperkirakan berada di kompleks Java Immigranten Bureau, Glugur.'],
+[19,'Para Pekerja yang Dipulangkan dari Biro Imigran Jawa di Glugur Tahun 1921','KITLV A891 - Repatrianten van het Java Immigranten Bureau (JIB) te Gloegoer bij Medan',1921,'Glugur',3,'Foto','KITLV A891','923164','Para pekerja yang dipulangkan (repatrian) berkumpul di kompleks Biro Imigran Jawa, Glugur.'],
+[20,'Tempat Tidur di Barak Penampungan Biro Imigran Jawa, Glugur, Tahun 1921','KITLV A891 - Slaapplaatsen in een hong van het Java Immigranten Bureau (JIB) te Gloegoer bij Medan',1921,'Glugur',3,'Foto','KITLV A891','921548','Barisan balai-balai tidur di barak penampungan, gambaran kondisi hunian para pekerja yang datang dari Jawa.'],
+[21,'Rumah Sakit Biro Imigran Jawa di Glugur Tahun 1921','KITLV A891 - Ziekenhuis van het Java Immigranten Bureau (JIB) te Gloegoer bij Medan',1921,'Glugur',3,'Foto','KITLV A891','921737','Bangsal rumah sakit di kompleks Biro Imigran Jawa, Glugur.'],
+[22,'Barak Kuli Biro Imigran Jawa untuk Pekerja Perkebunan Karet, Glugur, Tahun 1925','KITLV A112 - Koelieloods van het Java Immigranten Bureau (J.I.B.) ter huisvesting van werknemers voor rubberplantages te Gloegoer nabij Medan',1925,'Glugur',3,'Foto','KITLV A112','888279','Barak kuli yang menampung calon pekerja perkebunan karet sebelum disalurkan ke perkebunan.'],
+[23,'Kantor Cabang Javasche Bank di Medan Tahun 1910','Vestiging van de Javasche Bank te Medan',1910,'Lapangan Esplanade',2,'Foto','KITLV','783129','Gedung cabang Javasche Bank di Medan, bank sirkulasi Hindia Belanda.'],
+[24,'Interior Javasche Bank di Medan Tahun 1910','Interieur van de Javasche Bank te Medan',1910,'Lapangan Esplanade',2,'Foto','KITLV','788369','Ruang dalam bank dengan loket-loket kaca dan perabot kantor khas awal abad ke-20.'],
+[25,'Kantor Para Pegawai Javasche Bank di Medan','Kantoorpersoneel van de Javasche Bank te Medan',null,'Lapangan Esplanade',2,'Foto','KITLV','782270','Para pegawai bekerja di ruang kantor Javasche Bank Medan.'],
+[26,'Kantor Balai Kota dan Javasche Bank di Medan Tahun 1931','KITLV A265 - Gemeentehuis en de Javasche Bank te Medan',1931,'Lapangan Esplanade',1,'Foto','KITLV A265','766797','Gemeentehuis (balai kota) bersanding dengan Javasche Bank, dua institusi utama pemerintahan dan keuangan kota.'],
+[27,'Istana Sultan Deli di Medan Tahun 1931','KITLV A265 - Paleis van de sultan van Deli te Medan',1931,'Kawasan Istana',4,'Foto','KITLV A265','764024','Istana Sultan Deli (Istana Maimun), pusat Kesultanan Deli di tengah kota kolonial.'],
+[28,'Masjid Raya di Medan Tahun 1931','KITLV A265 - Grote Moskee te Medan',1931,'Kawasan Istana',4,'Foto','KITLV A265','761237','Masjid Raya Medan dengan kubah dan menaranya, masjid utama Kesultanan Deli.'],
+[29,'Kelenteng Tionghoa di Medan','KITLV A265 - Chinese tempel te Medan',null,'Pusat Kota',4,'Foto','KITLV A265','763511','Kelenteng dengan ornamen atap khas Tionghoa, cermin besarnya komunitas Tionghoa di Medan. Tahun tidak tercantum dalam dokumen kurasi.'],
+[30,'Jalan di Pecinan Medan Tahun 1925','Straat in de Chinese kamp te Medan',1925,'Pecinan',0,'Foto','KITLV','852918','Deretan rumah toko di kawasan Pecinan dengan pedati dan pejalan kaki, denyut perdagangan kota.'],
+[31,'J. de Graaf di Depan Gedung Perusahaan Pelayaran Belanda di Medan Tahun 1929','KITLV A1040 - J. de Graaf voor het gebouw van de Stoomvaart Maatschappij Nederland te Medan',1929,'Pusat Kota',0,'Foto','KITLV A1040','731999','J. de Graaf berdiri di depan gedung Stoomvaart Maatschappij Nederland, perusahaan pelayaran Belanda.'],
+[32,'Gubernur Jenderal D. Fock di Depan Gedung Asosiasi Pengusaha Perkebunan Tembakau Deli','KITLV A171 - Gouverneur-generaal D. Fock (rechts) voor het gebouw van de Deli Planters Vereeniging te Medan',null,'Pusat Kota',2,'Foto','KITLV A171','gdrive','Gubernur Jenderal D. Fock (kanan) di depan gedung Deli Planters Vereeniging, asosiasi pengusaha perkebunan tembakau Deli.'],
+[33,'Gedung Kerapatan di Jl. Istana Medan','KITLV A265 - Gerechtsgebouw (Kerapatan) aan de Paleisweg te Medan',null,'Kawasan Istana',1,'Foto','KITLV A265','775487','Gedung Kerapatan, balai peradilan kesultanan di Paleisweg (Jl. Istana).'],
+[34,'Showroom Diterangi Lampu Hias untuk Pernikahan Putri Juliana dan Pangeran Bernhard, Medan Tahun 1927','KITLV A647 - Showroom van de Nederlands-Indische Gas-Maatschappij, verlicht ter gelegenheid van het huwelijk van prinses Juliana en prins Bernhard',1927,'Pusat Kota',5,'Foto','KITLV A647','918269','Ruang pamer Nederlands-Indische Gas-Maatschappij dihiasi lampu dalam rangkaian perayaan pernikahan kerajaan Belanda.'],
+[35,'Rumah Gubernur Diterangi Lampu Hias untuk Pernikahan Putri Juliana dan Pangeran Bernhard, Medan Tahun 1937','KITLV A647 - De woning van de gouverneur te Medan, verlicht ter gelegenheid van het huwelijk van prinses Juliana en prins Bernhard',1937,'Pusat Kota',5,'Foto','KITLV A647','915980','Kediaman gubernur di Medan bermandikan lampu hias pada malam perayaan.'],
+[36,'Kantor Pos Diterangi Lampu Hias untuk Pernikahan Putri Juliana dan Pangeran Bernhard Tahun 1937','KITLV A647 - Het postkantoor te Medan, verlicht ter gelegenheid van het huwelijk van prinses Juliana en prins Bernhard',1937,'Lapangan Esplanade',5,'Foto','KITLV A647','917274','Kantor pos Medan dihiasi lampu dan bendera untuk merayakan pernikahan kerajaan.'],
+[37,'Gereja Protestan di Medan Tahun 1880','Protestanten - kerk te Medan',1880,'Pusat Kota',4,'Foto','KITLV','856003','Gereja Protestan Medan pada masa awal kota, arsip tertua dalam galeri ini.'],
+[38,'Gereja Protestan di Medan Tahun 1905','Protestantse kerk te Medan',1905,'Pusat Kota',4,'Foto','KITLV','854215','Gereja Protestan di tengah pepohonan rindang, menunjukkan perkembangan bangunan ibadah Eropa di Medan.'],
+[39,'Gereja Protestan di Medan, Pantai Timur Sumatra','Protestantse kerk te Medan, Sumatra\'s Oostkust',null,'Pusat Kota',4,'Foto','KITLV','804272','Gereja Protestan Medan dalam cetakan foto kecil; tahun tidak tercantum dalam dokumen kurasi.'],
+[40,'Jembatan Beratap di atas Sungai Deli Tahun 1905','KITLV A299 - Overkapte brug over een rivier te Deli',1905,'Sungai Deli',0,'Foto','KITLV A299','909047','Jembatan beratap yang melintasi sungai di Deli, bagian dari jalur penghubung kota dan perkebunan.']];
+const pad=n=>String(n).padStart(3,'0');
+const A=RAW.map(r=>({no:r[0],reg:'MDN-KOL-'+pad(r[0]),t:r[1],o:r[2],y:r[3],loc:r[4],room:r[5],sub:ROOMS[r[5]].n,med:r[6],kol:r[7],
+ src:r[8]==='gdrive'?'https://drive.google.com/drive/folders/1n6BlhY0U1vZBXQpNSORpUuJxAFOFvVpj':(r[8]?L+r[8]:''),ctx:r[9],
+ th:'img/thumb/a'+String(r[0]).padStart(2,'0')+'.jpg',full:'img/full/a'+String(r[0]).padStart(2,'0')+'.jpg'}));
+ROOMS.forEach((R,i)=>R.items=A.filter(a=>a.room===i));
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $=id=>document.getElementById(id);
+const yt=a=>a.y?String(a.y):'Tanpa tahun';
+const toast=m=>{const t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),2200)};
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- VIRTUAL TOUR ---------- */
+const stage=$('stage'),cam=$('cam'),room=$('room');
+const WW=1000,WH=700;
+const IC_DOC='<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><rect x="6" y="8" width="5" height="5"/><path d="M13 8h5M13 11h5M6 16h12"/></svg>';
+const IC_IMG='<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="9.5" r="1.8"/><path d="M4 18l5-5 4 4 3-3 4 4"/></svg>';
+let cur=0,N=0,R=0,yaw=0,pitch=0,P=600,zoom=1,auto=!RM,drag=null,moved=false,step=0;
+function persp(){const w=stage.clientWidth,h=stage.clientHeight;P=Math.max(w*.5,h*.62)*(w<600?1.5:1)/Math.tan(37.5*Math.PI/180)*zoom;cam.style.perspective=P+'px';render()}
+function render(){room.style.transform=`translateZ(${P}px) rotateX(${pitch}deg) rotateY(${yaw}deg)`}
+function build(i){
+  cur=i;const Rm=ROOMS[i];N=Math.max(6,Rm.items.length+1);step=360/N;R=WW/(2*Math.tan(Math.PI/N));
+  const st=`--wc:${Rm.c};--wain:${Rm.w};--trim:${Rm.t};width:${WW}px;height:${WH}px;left:${-WW/2}px;top:${-WH/2}px;`;
+  let h='';
+  const prev=(i+ROOMS.length-1)%ROOMS.length,next=(i+1)%ROOMS.length;
+  h+=`<div class="wall" style="${st}transform:rotateY(0deg) translateZ(${-R+1}px)"><div class="info"><h2>${esc(Rm.n)}</h2><p>${esc(Rm.d)}</p><div class="doors"><button class="door" data-go="${prev}"><i>←</i>${esc(ROOMS[prev].n)}</button><button class="door" data-go="${next}"><i>→</i>${esc(ROOMS[next].n)}</button></div></div></div>`;
+  for(let k=1;k<N;k++){const a=Rm.items[k-1];const tr=`transform:rotateY(${-k*step}deg) translateZ(${-R+1}px)`;
+    h+=a?`<div class="wall" style="${st}${tr}"><div class="frame" data-img="${a.no}"><img src="${a.th}" alt="${esc(a.t)}" draggable="false"></div><div class="plate"><b>${esc(a.t)}</b><span>${esc(a.reg)} · ${esc(yt(a))}</span></div><div class="hs"><button class="dia" data-info="${a.no}" aria-label="Info arsip"><span>${IC_DOC}</span></button><button class="dia" data-img="${a.no}" aria-label="Lihat gambar"><span>${IC_IMG}</span></button></div></div>`
+         :`<div class="wall" style="${st}${tr}"><div class="info"><p>Galeri Arsip Kota Medan · ${esc(Rm.n)}</p></div></div>`}
+  const F=R*2.2;
+  h+=`<div class="floor" style="width:${F}px;height:${F}px;left:${-F/2}px;top:${-F/2}px;transform:translateY(${WH/2}px) rotateX(90deg)"></div><div class="ceil" style="width:${F}px;height:${F}px;left:${-F/2}px;top:${-F/2}px;transform:translateY(${-WH/2}px) rotateX(-90deg)"></div>`;
+  room.innerHTML=h;yaw=0;pitch=0;
+  $('rname').textContent=Rm.n;$('rpos').textContent=`Ruang ${i+1} dari ${ROOMS.length} · ${Rm.items.length} arsip`;
+  document.querySelectorAll('.scene').forEach((s,j)=>{s.classList.toggle('on',j===i);s.setAttribute('aria-current',j===i?'true':'false')});
+  persp();
+}
+function facing(){let k=Math.round(yaw/step);return((k%N)+N)%N}
+function goWall(k){const target=k*step;let d=target-yaw;d=((d%360)+540)%360-180;animTo(yaw+d)}
+let anim=null;
+function animTo(t){setAuto(false);cancelAnimationFrame(anim);const s=yaw,t0=performance.now(),D=RM?1:450;const f=n=>{const p=Math.min(1,(n-t0)/D),e=1-(1-p)**3;yaw=s+(t-s)*e;render();if(p<1)anim=requestAnimationFrame(f)};anim=requestAnimationFrame(f)}
+function setAuto(v){auto=v;$('auto').classList.toggle('on',v);$('auto').setAttribute('aria-pressed',v)}
+function loop(){if(auto&&!drag&&$('gate').hidden){yaw-=.05;render()}requestAnimationFrame(loop)}
+stage.addEventListener('pointerdown',e=>{if(e.target.closest('.hud,.gate,.scenes,.sarr,.cta'))return;drag={x:e.clientX,y:e.clientY,yaw,pitch};moved=false;stage.classList.add('drag');stage.setPointerCapture(e.pointerId)});
+stage.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.abs(dx)+Math.abs(dy)>6){moved=true;setAuto(false);$('hint').style.opacity=0}
+  const k=90/stage.clientWidth*1.6;yaw=drag.yaw+dx*k;pitch=Math.max(-22,Math.min(22,drag.pitch-dy*k));render()});
+const end=e=>{if(!drag)return;drag=null;stage.classList.remove('drag');
+  if(!moved){const el=document.elementFromPoint(e.clientX,e.clientY);const n=el&&el.closest('[data-info]'),f=el&&el.closest('[data-img]'),g=el&&el.closest('[data-go]');
+    if(n)openInfo(+n.dataset.info);else if(f)openLB(+f.dataset.img,'solo');else if(g)build(+g.dataset.go)}};
+stage.addEventListener('pointerup',end);stage.addEventListener('pointercancel',()=>{drag=null;stage.classList.remove('drag')});
+stage.addEventListener('wheel',e=>{if(!e.ctrlKey)return;e.preventDefault();zoom=Math.max(.7,Math.min(2.2,zoom*(e.deltaY>0?.92:1.08)));persp()},{passive:false});
+$('zin').onclick=()=>{zoom=Math.min(2.2,zoom*1.15);persp()};
+$('zout').onclick=()=>{zoom=Math.max(.7,zoom/1.15);persp()};
+$('auto').onclick=()=>setAuto(!auto);
+$('prevW').onclick=()=>goWall(Math.round(yaw/step)-1);
+$('nextW').onclick=()=>goWall(Math.round(yaw/step)+1);
+$('openW').onclick=()=>{const k=((Math.round(yaw/step))%N+N)%N;const a=ROOMS[cur].items[k-1];if(a)openInfo(a.no);else toast('Ini dinding informasi ruang — gunakan pintu untuk pindah ruang')};
+$('fs').onclick=()=>{try{const p=document.fullscreenElement?document.exitFullscreen():stage.requestFullscreen();p&&p.catch&&p.catch(()=>toast('Layar penuh tidak tersedia di sini'))}catch(e){toast('Layar penuh tidak tersedia di sini')}};
+document.addEventListener('fullscreenchange',()=>setTimeout(persp,60));
+stage.tabIndex=0;stage.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'){$('prevW').click();e.preventDefault()}if(e.key==='ArrowRight'){$('nextW').click();e.preventDefault()}if(e.key==='Enter')$('openW').click()});
+$('gate').style.setProperty('--gate',`url(${A[25].th})`);
+$('enter').onclick=()=>{$('gate').hidden=true;$('gate').style.display='none';stage.focus({preventScroll:true});setTimeout(()=>$('hint').style.opacity=0,4000)};
+$('scenes').innerHTML=ROOMS.map((Rm,i)=>`<button class="scene" data-scene="${i}"><img src="${Rm.items[0].th}" alt="" loading="lazy"><span>${i+1}. ${esc(Rm.n)}</span></button>`).join('');
+$('scenes').addEventListener('click',e=>{const b=e.target.closest('[data-scene]');if(!b)return;$('gate').hidden=true;$('gate').style.display='none';build(+b.dataset.scene)});
+$('sl').onclick=()=>$('scenes').scrollBy({left:-340,behavior:'smooth'});
+$('sr').onclick=()=>$('scenes').scrollBy({left:340,behavior:'smooth'});
+$('cta').onclick=()=>{setAuto(false);$('katalog').scrollIntoView({behavior:RM?'auto':'smooth'})};
+const ro=new ResizeObserver(persp);ro.observe(stage);
+build(0);requestAnimationFrame(loop);
+
+/* ---------- CATALOG ---------- */
+const dec=a=>a.y?Math.floor(a.y/10)*10+'-an':'Tanpa tahun';
+const uniq=f=>[...new Set(A.map(f))];
+const fill=(id,label,vals)=>$(id).innerHTML=`<option value="">${label}</option>`+vals.map(v=>`<option>${esc(v)}</option>`).join('');
+fill('fYear','Semua tahun',uniq(dec).sort((a,b)=>a.localeCompare(b,'id',{numeric:true})));
+fill('fLoc','Semua lokasi',uniq(a=>a.loc).sort());
+fill('fSub','Semua subjek',ROOMS.map(r=>r.n));
+fill('fMed','Semua media',uniq(a=>a.med));
+let list=A;
+function apply(){
+  const q=$('q').value.trim().toLowerCase(),fy=$('fYear').value,fl=$('fLoc').value,fs=$('fSub').value,fm=$('fMed').value,so=$('sort').value;
+  list=A.filter(a=>(!q||[a.t,a.o,a.loc,a.reg,a.sub,a.ctx,a.y,a.kol].join(' ').toLowerCase().includes(q))&&(!fy||dec(a)===fy)&&(!fl||a.loc===fl)&&(!fs||a.sub===fs)&&(!fm||a.med===fm));
+  const yv=a=>a.y??9999;
+  if(so==='old')list.sort((a,b)=>yv(a)-yv(b)||a.no-b.no);else if(so==='new')list.sort((a,b)=>(b.y??0)-(a.y??0)||a.no-b.no);else if(so==='az')list.sort((a,b)=>a.t.localeCompare(b.t,'id'));else list.sort((a,b)=>a.no-b.no);
+  $('count').textContent=`Menampilkan ${list.length} dari ${A.length} arsip`;
+  const act=[['q',q&&`“${$('q').value.trim()}”`],['fYear',fy],['fLoc',fl],['fSub',fs],['fMed',fm]].filter(x=>x[1]);
+  $('active').innerHTML=act.map(([k,v])=>`<button class="chip on" data-clear="${k}">${esc(v)} ✕</button>`).join('')+(act.length>1?'<button class="chip" data-clear="all">Hapus semua</button>':'');
+  $('grid').innerHTML=list.length?list.map(a=>`<button class="card" data-open="${a.no}"><div class="ph"><img src="${a.th}" alt="${esc(a.t)}" loading="lazy" draggable="false"><div class="wm"></div><span class="reg">${a.reg}</span></div><div class="cb"><span class="tag">${esc(a.med)} · ${esc(a.sub)}</span><h3>${esc(a.t)}</h3><small>${esc(yt(a))} · ${esc(a.loc)}</small></div></button>`).join('')
+    :`<div class="empty">Tidak ada arsip yang cocok. Coba kata kunci lain atau hapus filter.</div>`;
+  try{localStorage.setItem('gakm-f',JSON.stringify({q:$('q').value,fy,fl,fs,fm,so}))}catch(e){}
+}
+['q','fYear','fLoc','fSub','fMed','sort'].forEach(id=>$(id).addEventListener(id==='q'?'input':'change',apply));
+$('active').addEventListener('click',e=>{const b=e.target.closest('[data-clear]');if(!b)return;const k=b.dataset.clear;(k==='all'?['q','fYear','fLoc','fSub','fMed']:[k]).forEach(i=>$(i).value='');apply()});
+$('grid').addEventListener('click',e=>{const c=e.target.closest('[data-open]');if(c)openLB(+c.dataset.open,'cat')});
+try{const s=JSON.parse(localStorage.getItem('gakm-f')||'null');if(s){$('q').value=s.q||'';$('fYear').value=s.fy||'';$('fLoc').value=s.fl||'';$('fSub').value=s.fs||'';$('fMed').value=s.fm||'';$('sort').value=s.so||'reg'}}catch(e){}
+apply();
+
+/* ---------- LIGHTBOX ---------- */
+let seq=A,idx=0,z=1,px=0,py=0,last=null;
+const img=$('lbImg'),view=$('view');
+function setZ(n,ox,oy){z=Math.max(1,Math.min(4,n));if(z===1){px=py=0}view.classList.toggle('z',z>1);img.style.transform=`translate(${px}px,${py}px) scale(${z})`}
+function show(){const a=seq[idx];setZ(1);img.src=a.full;img.alt=a.t;$('cap').textContent=`${a.reg} · ${a.t}`;
+  const rows=[['No. registrasi',a.reg],['Tahun',yt(a)],['Pencipta / koleksi',a.kol+' — KITLV, Universiteit Leiden'],['Lokasi',a.loc],['Subjek',a.sub],['Jenis media',a.med],['Repositori',a.src.includes('drive.google')?'Folder Google Drive kurator':(a.src?'Leiden University Libraries Digital Collections':'Belum dicantumkan dalam dokumen kurasi')]];
+  $('side').innerHTML=`<span class="tag">Arsip ${idx+1} dari ${seq.length}</span><h2 id="lbT">${esc(a.t)}</h2>${a.o?`<p class="orig">${esc(a.o)}</p>`:'<p class="orig">Judul asli tidak dicantumkan</p>'}
+  <p class="ctx">${esc(a.ctx)}</p><dl>${rows.map(r=>`<dt>${r[0]}</dt><dd>${esc(r[1])}</dd>`).join('')}${a.src?`<dt>Tautan sumber</dt><dd><a href="${esc(a.src)}" target="_blank" rel="noopener">Buka arsip asli ↗</a></dd>`:''}</dl>
+  <div class="acts"><button class="btn" id="cite">Salin sitasi</button><button class="btn ghost" id="totour">Lihat di ruang tur</button></div>
+  <p style="font-size:14px;color:var(--mute);margin-top:16px">Gambar dilindungi tanda air galeri. Untuk salinan resolusi asli, kunjungi tautan sumber.</p>`;
+  $('cite').onclick=()=>{const c=`${a.t}${a.o?' ['+a.o+']':''}. ${yt(a)}. ${a.kol}. ${a.src||''} (Galeri Arsip Kota Medan Era Kolonial, ${a.reg}).`;
+    try{navigator.clipboard.writeText(c).then(()=>toast('Sitasi disalin'),()=>toast('Tidak dapat menyalin di sini'))}catch(e){toast('Tidak dapat menyalin di sini')}};
+  $('totour').onclick=()=>{closeLB();build(a.room);$('gate').hidden=true;$('gate').style.display='none';const k=ROOMS[a.room].items.indexOf(a)+1;yaw=k*step;render();setAuto(false);document.getElementById('tur').scrollIntoView()};
+}
+function openLB(no,mode){if(!$('im').classList.contains('open'))last=document.activeElement;closeInfo(true);seq=mode==='cat'?(list.length?list:A):(mode==='solo'?ROOMS[A[no-1].room].items:A);idx=Math.max(0,seq.findIndex(a=>a.no===no));setAuto(false);show();$('lb').classList.toggle('solo',mode==='solo');$('lb').classList.add('open');document.body.style.overflow='hidden';$('lbX').focus()}
+function closeLB(){$('lb').classList.remove('open');document.body.style.overflow='';last&&last.focus&&last.focus({preventScroll:true})}
+function openInfo(no){const a=A[no-1];last=document.activeElement;setAuto(false);
+  $('ibx').innerHTML=`<button class="x2" id="imX" aria-label="Tutup">✕</button><h2 id="imT">Info</h2>
+  <div class="mt">Judul: ${esc(a.t)}<br>${a.o?`Judul asli: <i>${esc(a.o)}</i><br>`:''}Pencipta / koleksi: ${esc(a.kol)} — KITLV<br>Media: ${esc(a.med)}<br>No. registrasi: ${esc(a.reg)}<br>Tahun: ${esc(yt(a))}<br>Lokasi: ${esc(a.loc)}</div>
+  <p>${esc(a.ctx)}</p>${a.src?`<p style="text-align:center"><a href="${esc(a.src)}" target="_blank" rel="noopener">Sumber: buka arsip asli ↗</a></p>`:'<p style="text-align:center">Sumber belum dicantumkan dalam dokumen kurasi.</p>'}
+  <div class="acts"><button class="btn" id="imImg">Lihat gambar</button><button class="btn ghost" id="imMore">Detail &amp; sitasi</button></div>`;
+  $('imX').onclick=()=>closeInfo();$('imImg').onclick=()=>openLB(no,'solo');$('imMore').onclick=()=>openLB(no,'tour');
+  $('im').classList.add('open');document.body.style.overflow='hidden';$('imX').focus()}
+function closeInfo(keep){if(!$('im').classList.contains('open'))return;$('im').classList.remove('open');if(!keep){document.body.style.overflow='';last&&last.focus&&last.focus({preventScroll:true})}}
+$('im').addEventListener('click',e=>{if(e.target.id==='im')closeInfo()});
+$('lbX').onclick=closeLB;
+$('lbP').onclick=()=>{idx=(idx-1+seq.length)%seq.length;show()};
+$('lbN').onclick=()=>{idx=(idx+1)%seq.length;show()};
+$('vz').onclick=()=>setZ(z*1.5);$('vo').onclick=()=>setZ(z/1.5);
+let pd=null;
+img.addEventListener('pointerdown',e=>{pd={x:e.clientX,y:e.clientY,px,py,m:false};img.setPointerCapture(e.pointerId)});
+img.addEventListener('pointermove',e=>{if(!pd||z===1)return;const dx=e.clientX-pd.x,dy=e.clientY-pd.y;if(Math.abs(dx)+Math.abs(dy)>4)pd.m=true;px=pd.px+dx;py=pd.py+dy;setZ(z)});
+img.addEventListener('pointerup',e=>{if(pd&&!pd.m){setZ(z>1?1:2.2)}pd=null});
+view.addEventListener('wheel',e=>{e.preventDefault();setZ(z*(e.deltaY>0?.9:1.1))},{passive:false});
+img.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('contextmenu',e=>{if(e.target.closest('.ph,.frame'))e.preventDefault()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('im').classList.contains('open')){closeInfo();return}if(!$('lb').classList.contains('open'))return;if(e.key==='Escape')closeLB();if(e.key==='ArrowLeft')$('lbP').click();if(e.key==='ArrowRight')$('lbN').click()});
+/* nav highlight */
+const secs=['tur','katalog','tentang'].map(id=>$(id));
+const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting)document.querySelectorAll('.nav nav a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+en.target.id))}),{rootMargin:'-45% 0px -50% 0px'});
+secs.forEach(s=>io.observe(s));
+}
+</script>
+</body>
+</html>
