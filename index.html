@@ -65,7 +65,7 @@ button,select,input{font:inherit;font-size:16px}
 .ibx .acts{justify-content:center;margin-top:8px}
 .ibx .btn.ghost{color:#1c3f7a}
 .cap{display:none}
-.kreator{position:fixed;right:14px;bottom:112px;z-index:90;background:rgba(14,47,54,.95);color:#efe7d6;border:2px solid #b89552;border-radius:14px;padding:10px 20px 12px;box-shadow:0 12px 32px rgba(0,0,0,.5);text-align:right;pointer-events:none}
+.kreator{position:fixed;right:14px;bottom:112px;z-index:2147483000;background:rgba(14,47,54,.95);color:#efe7d6;border:2px solid #b89552;border-radius:14px;padding:10px 20px 12px;box-shadow:0 12px 32px rgba(0,0,0,.5);text-align:right;pointer-events:none}
 .kreator small{display:block;font-size:14px;font-weight:700;color:#e9c77f;letter-spacing:.04em}
 .kreator b{display:block;font:700 clamp(22px,2.6vw,32px)/1.12 "Bodoni Moda",serif;color:#ff8a5c;white-space:nowrap;margin:2px 0}
 .kreator span{display:block;font-size:14px;opacity:.9}
@@ -373,7 +373,10 @@ $('prevW').onclick=()=>goWall(Math.round(yaw/step)-1);
 $('nextW').onclick=()=>goWall(Math.round(yaw/step)+1);
 $('openW').onclick=()=>{const k=((Math.round(yaw/step))%N+N)%N;const a=ROOMS[cur].items[k-1];if(a)openInfo(a.no);else toast('Ini dinding informasi ruang — gunakan pintu untuk pindah ruang')};
 $('fs').onclick=()=>{try{const p=document.fullscreenElement?document.exitFullscreen():stage.requestFullscreen();p&&p.catch&&p.catch(()=>toast('Layar penuh tidak tersedia di sini'))}catch(e){toast('Layar penuh tidak tersedia di sini')}};
-document.addEventListener('fullscreenchange',()=>setTimeout(persp,60));
+const kre=document.querySelector('.kreator');
+const pinK=()=>{const fe=document.fullscreenElement||document.webkitFullscreenElement;(fe||document.body).appendChild(kre)};
+document.addEventListener('fullscreenchange',()=>{pinK();setTimeout(persp,60)});
+document.addEventListener('webkitfullscreenchange',()=>{pinK();setTimeout(persp,60)});
 stage.tabIndex=0;stage.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'){$('prevW').click();e.preventDefault()}if(e.key==='ArrowRight'){$('nextW').click();e.preventDefault()}if(e.key==='Enter')$('openW').click()});
 $('gate').style.setProperty('--gate',`url(${A[25].th})`);
 $('enter').onclick=()=>{$('gate').hidden=true;$('gate').style.display='none';stage.focus({preventScroll:true});setTimeout(()=>$('hint').style.opacity=0,4000)};
