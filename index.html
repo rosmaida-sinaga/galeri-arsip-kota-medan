@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Galeri Arsip Kota Medan</title>
+<title>Galeri Arsip Kota Medan · Dr. Rosmaida Sinaga, M.Hum</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
@@ -29,6 +29,11 @@ button,select,input{font:inherit;font-size:16px}
 .brand svg{flex:none}
 .brand b{font-family:"Bodoni Moda",serif;font-size:19px;line-height:1.1}
 .brand small{display:block;font-size:13px;opacity:.75}
+.brand small.who{opacity:1;color:#e9c77f;font-size:15px}.brand small.who strong{font-weight:700}
+.gk{max-width:none!important;margin:0 auto 22px!important;line-height:1.2}.gk small{display:block;font-size:15px;letter-spacing:.02em;opacity:.85}.gk b{display:block;font:700 clamp(30px,4.4vw,48px)/1.1 "Bodoni Moda",serif;color:#ff8a5c;margin:4px 0}.gk span{display:block;font-size:15px;opacity:.85}
+.byline{margin:6px 0 0;font-size:17px;color:var(--mute)}.byline b{color:var(--ink);font-family:"Bodoni Moda",serif;font-size:21px}
+.bigname{font:700 clamp(30px,4vw,46px)/1.1 "Bodoni Moda",serif;color:#ff8a5c;margin:-8px 0 26px}
+.ibx p.cr{text-align:center}.cr{font-size:14px;color:#555;text-align:center;margin-top:16px;border-top:1px solid #ddd;padding-top:12px}.cr b{color:#1c3f7a}
 .nav nav{display:flex;gap:4px;flex-wrap:wrap}
 .nav nav a{text-decoration:none;padding:10px 14px;border-radius:999px;font-weight:600;min-height:44px;display:inline-flex;align-items:center}
 .nav nav a:hover,.nav nav a.on{background:rgba(239,231,214,.14)}
@@ -41,8 +46,8 @@ button,select,input{font:inherit;font-size:16px}
 .ovb b{display:block;font:700 clamp(20px,2.4vw,30px)/1.05 "Bodoni Moda",serif;color:#ff7b4a}
 .cta{position:absolute;top:14px;right:14px;z-index:9;background:#f06a35;color:#fff;border:0;border-radius:10px;padding:10px 18px 10px 16px;font-weight:700;line-height:1.15;text-align:left;box-shadow:7px 7px 0 #071417;cursor:pointer;font-size:15px}
 .cta b{display:block;font-size:22px}
-.credit{position:absolute;right:18px;bottom:122px;z-index:5;text-align:right;pointer-events:none;text-shadow:0 2px 8px rgba(0,0,0,.9);max-width:380px}
-.credit b{display:block;font:700 26px/1.1 "Bodoni Moda",serif;padding-bottom:6px;border-bottom:2px solid var(--paper);margin-bottom:6px}
+.credit{position:absolute;right:18px;bottom:122px;z-index:5;text-align:right;pointer-events:none;text-shadow:0 2px 8px rgba(0,0,0,.9);max-width:560px}
+.credit b{display:block;white-space:nowrap;font:700 32px/1.1 "Bodoni Moda",serif;padding-bottom:6px;border-bottom:2px solid var(--paper);margin-bottom:6px}
 .credit span{display:block;font-size:15px;font-weight:600}
 .sarr{position:absolute;bottom:30px;z-index:6;width:36px;height:44px;border:0;background:transparent;color:var(--paper);font-size:30px;cursor:pointer}
 .sarr.l{left:2px}.sarr.r{right:2px}
@@ -100,7 +105,7 @@ button,select,input{font:inherit;font-size:16px}
 .scene span{position:absolute;left:0;right:0;bottom:0;padding:16px 8px 5px;font-size:13px;line-height:1.2;font-weight:700;background:linear-gradient(transparent,rgba(0,0,0,.85))}
 /* catalog */
 .cathead{display:flex;flex-wrap:wrap;gap:10px 30px;align-items:end;margin-bottom:22px}
-.cathead h2{font-size:clamp(32px,3.6vw,44px);flex:1 1 300px}
+.cathead h2{font-size:clamp(32px,3.6vw,44px)}
 .cathead p{margin:0;color:var(--mute);flex:1 1 320px;max-width:60ch}
 .tools{display:grid;grid-template-columns:minmax(0,2fr) repeat(4,minmax(0,1fr)) minmax(0,1fr);gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
 .tools label{display:flex;flex-direction:column;font-size:13px;color:var(--mute);font-weight:600;gap:4px}
@@ -156,7 +161,7 @@ footer{background:#071417;color:#a6b0ac;font-size:14px;padding:22px max(5vw,16px
 .lb.solo{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr)}.lb.solo .view img{max-height:calc(100vh - 60px)}.lb.solo .side{display:none}
 .lb.solo .cap{display:block;position:absolute;left:0;right:0;bottom:0;padding:12px 16px;background:rgba(0,0,0,.65);font-size:15px;z-index:1}
 .lb.solo .vt{bottom:60px}
-@media(max-width:600px){.nav{padding:8px 12px}.brand small{display:none}.nav nav a{padding:8px 10px}.stage{height:calc(100svh - 108px);min-height:460px}.credit{display:none}.ovb svg{width:40px;height:40px}.ovb small{font-size:13px}.cta{padding:8px 12px;font-size:13px}.cta b{font-size:17px}.ovb{max-width:58%}.hud.tr{top:92px}.scene{width:120px}.scene img{height:70px}.hud.mid{bottom:100px}.hint,.hud.tl{display:none}.grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}.cb h3{font-size:17px}.side{padding:18px}}
+@media(max-width:600px){.nav{padding:8px 12px}.brand small.who{font-size:13px}.nav nav a{padding:8px 10px}.stage{height:calc(100svh - 108px);min-height:460px}.credit{display:none}.ovb svg{width:40px;height:40px}.ovb small{font-size:13px}.cta{padding:8px 12px;font-size:13px}.cta b{font-size:17px}.ovb{max-width:58%}.hud.tr{top:92px}.scene{width:120px}.scene img{height:70px}.hud.mid{bottom:100px}.hint,.hud.tl{display:none}.grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}.cb h3{font-size:17px}.side{padding:18px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}.card{transition:none}}
 </style>
 </head>
@@ -164,7 +169,7 @@ footer{background:#071417;color:#a6b0ac;font-size:14px;padding:22px max(5vw,16px
 <header class="nav">
   <a class="brand" href="#tur" aria-label="Galeri Arsip Kota Medan, beranda">
     <svg width="38" height="38" viewBox="0 0 40 40" aria-hidden="true"><rect x="2" y="2" width="36" height="36" rx="6" fill="none" stroke="#b89552" stroke-width="2.5"/><path d="M8 31h24M10 31V17M16 31V17M24 31V17M30 31V17M7 16l13-8 13 8z" stroke="#efe7d6" stroke-width="2.2" fill="none" stroke-linejoin="round"/></svg>
-    <span><b>Galeri Arsip Kota Medan</b><small>Era Kolonial · 1880–1937</small></span>
+    <span><b>Galeri Arsip Kota Medan</b><small class="who">Kreator: <strong>Dr. Rosmaida Sinaga, M.Hum</strong></small></span>
   </a>
   <nav aria-label="Navigasi utama"><a href="#tur">Tur Virtual</a><a href="#katalog">Katalog Arsip</a><a href="#tentang">Tentang</a></nav>
 </header>
@@ -178,7 +183,7 @@ footer{background:#071417;color:#a6b0ac;font-size:14px;padding:22px max(5vw,16px
       <div><small>Galeri Virtual · Pendidikan Sejarah</small><b>Arsip Kota Medan<br>Era Kolonial</b></div>
     </div>
     <button class="cta" id="cta"><b>Klik di sini</b>Buka E-Katalog ➜</button>
-    <div class="credit"><b>Merawat Jejak, Menjaga Ingatan</b><span>Kurator: Rosmaida Sinaga</span><span>Jurusan Pendidikan Sejarah FIS UNIMED · 2026</span></div>
+    <div class="credit"><span>Kreator</span><b>Dr. Rosmaida Sinaga, M.Hum</b><span>Merawat Jejak, Menjaga Ingatan</span><span>Jurusan Pendidikan Sejarah FIS UNIMED · 2026</span></div>
     <div class="hud tl" style="top:auto;bottom:122px;left:16px"><b id="rname">Ruang</b><span id="rpos">Ruang 1 dari 6</span></div>
     <div class="hud tr">
       <button class="ib on" id="auto" title="Putar otomatis" aria-label="Putar otomatis" aria-pressed="true">⟳</button>
@@ -195,6 +200,7 @@ footer{background:#071417;color:#a6b0ac;font-size:14px;padding:22px max(5vw,16px
     <div class="gate" id="gate">
       <div>
         <h2>Galeri Arsip Digital Kota Medan Era Kolonial</h2>
+        <p class="gk"><small>Kreator</small><b>Dr. Rosmaida Sinaga, M.Hum</b><span>Jurusan Pendidikan Sejarah · Fakultas Ilmu Sosial · Universitas Negeri Medan</span></p>
         <p>Merawat jejak, menjaga ingatan, dan melestarikan memori kolektif. Masuki enam ruang pamer berisi 40 foto dan peta Medan 1880–1937 dari Digital Collections Universiteit Leiden (KITLV). Geser layar untuk melihat sekeliling, ketuk ikon wajik untuk membaca info atau melihat gambar.</p>
         <button class="btn" id="enter">Masuk galeri →</button>
       </div>
@@ -208,7 +214,7 @@ footer{background:#071417;color:#a6b0ac;font-size:14px;padding:22px max(5vw,16px
 <section class="band" id="katalog">
   <div class="wrap">
     <div class="cathead">
-      <h2>Katalog arsip</h2>
+      <div style="flex:1 1 300px"><h2>Katalog arsip</h2><p class="byline">Kreator: <b>Dr. Rosmaida Sinaga, M.Hum</b></p></div>
       <p>Telusuri seluruh koleksi menurut tahun, lokasi, subjek, atau jenis media. Setiap arsip memuat pratinjau resolusi tinggi, metadata lengkap, dan tanda autentikasi galeri.</p>
     </div>
     <div class="tools" role="search">
@@ -227,15 +233,16 @@ footer{background:#071417;color:#a6b0ac;font-size:14px;padding:22px max(5vw,16px
 <section class="band about" id="tentang">
   <div class="wrap">
     <h2>Tentang galeri</h2>
+    <p class="bigname">Kreator: Dr. Rosmaida Sinaga, M.Hum</p>
     <div class="cols">
-      <div><h3>Kurasi</h3><p>Galeri Arsip Digital Kota Medan Era Kolonial: <em>Merawat Jejak, Menjaga Ingatan dan Melestarikan Memori Kolektif</em>. Disusun oleh Rosmaida Sinaga, Jurusan Pendidikan Sejarah, Fakultas Ilmu Sosial, Universitas Negeri Medan, 2026.</p></div>
+      <div><h3>Kurasi</h3><p>Galeri Arsip Digital Kota Medan Era Kolonial: <em>Merawat Jejak, Menjaga Ingatan dan Melestarikan Memori Kolektif</em>. Disusun oleh Dr. Rosmaida Sinaga, M.Hum, Jurusan Pendidikan Sejarah, Fakultas Ilmu Sosial, Universitas Negeri Medan, 2026.</p></div>
       <div><h3>Sumber koleksi</h3><p>Hampir seluruh arsip berasal dari Digital Collections Universiteit Leiden, terutama koleksi foto KITLV (Koninklijk Instituut voor Taal-, Land- en Volkenkunde). Tautan sumber asli dicantumkan pada setiap arsip.</p><p><a href="https://digitalcollections.universiteitleiden.nl/">digitalcollections.universiteitleiden.nl</a></p></div>
       <div><h3>Ketentuan penggunaan</h3><ul><li>Gambar diberi tanda air (watermark) galeri untuk menjaga keaslian dan menandai pengelola.</li><li>Untuk riset atau pendidikan, kutip sumber asli dan nomor registrasi galeri (MDN-KOL-xxx).</li><li>Tahun dan judul mengikuti dokumen kurasi; beberapa arsip belum bertahun.</li></ul></div>
     </div>
   </div>
 </section>
 </main>
-<footer><span>© 2026 Galeri Arsip Kota Medan Era Kolonial · Pendidikan Sejarah FIS UNIMED</span><span>Koleksi foto: KITLV / Universiteit Leiden</span></footer>
+<footer><span>© 2026 <b style="color:#efe7d6">Dr. Rosmaida Sinaga, M.Hum</b> · Galeri Arsip Kota Medan Era Kolonial · Pendidikan Sejarah FIS UNIMED</span><span>Koleksi foto: KITLV / Universiteit Leiden</span></footer>
 
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-labelledby="lbT">
   <div class="view" id="view">
@@ -403,13 +410,13 @@ apply();
 let seq=A,idx=0,z=1,px=0,py=0,last=null;
 const img=$('lbImg'),view=$('view');
 function setZ(n,ox,oy){z=Math.max(1,Math.min(4,n));if(z===1){px=py=0}view.classList.toggle('z',z>1);img.style.transform=`translate(${px}px,${py}px) scale(${z})`}
-function show(){const a=seq[idx];setZ(1);img.src=a.full;img.alt=a.t;$('cap').textContent=`${a.reg} · ${a.t}`;
+function show(){const a=seq[idx];setZ(1);img.src=a.full;img.alt=a.t;$('cap').textContent=`${a.reg} · ${a.t} — Galeri oleh Dr. Rosmaida Sinaga, M.Hum`;
   const rows=[['No. registrasi',a.reg],['Tahun',yt(a)],['Pencipta / koleksi',a.kol+' — KITLV, Universiteit Leiden'],['Lokasi',a.loc],['Subjek',a.sub],['Jenis media',a.med],['Repositori',a.src.includes('drive.google')?'Folder Google Drive kurator':(a.src?'Leiden University Libraries Digital Collections':'Belum dicantumkan dalam dokumen kurasi')]];
   $('side').innerHTML=`<span class="tag">Arsip ${idx+1} dari ${seq.length}</span><h2 id="lbT">${esc(a.t)}</h2>${a.o?`<p class="orig">${esc(a.o)}</p>`:'<p class="orig">Judul asli tidak dicantumkan</p>'}
   <p class="ctx">${esc(a.ctx)}</p><dl>${rows.map(r=>`<dt>${r[0]}</dt><dd>${esc(r[1])}</dd>`).join('')}${a.src?`<dt>Tautan sumber</dt><dd><a href="${esc(a.src)}" target="_blank" rel="noopener">Buka arsip asli ↗</a></dd>`:''}</dl>
   <div class="acts"><button class="btn" id="cite">Salin sitasi</button><button class="btn ghost" id="totour">Lihat di ruang tur</button></div>
-  <p style="font-size:14px;color:var(--mute);margin-top:16px">Gambar dilindungi tanda air galeri. Untuk salinan resolusi asli, kunjungi tautan sumber.</p>`;
-  $('cite').onclick=()=>{const c=`${a.t}${a.o?' ['+a.o+']':''}. ${yt(a)}. ${a.kol}. ${a.src||''} (Galeri Arsip Kota Medan Era Kolonial, ${a.reg}).`;
+  <p style="font-size:14px;color:var(--mute);margin-top:16px">Gambar dilindungi tanda air galeri. Untuk salinan resolusi asli, kunjungi tautan sumber.</p><p class="byline">Kreator galeri: <b>Dr. Rosmaida Sinaga, M.Hum</b></p>`;
+  $('cite').onclick=()=>{const c=`${a.t}${a.o?' ['+a.o+']':''}. ${yt(a)}. ${a.kol}. ${a.src||''} (Dalam: Dr. Rosmaida Sinaga, M.Hum, Galeri Arsip Digital Kota Medan Era Kolonial, ${a.reg}).`;
     try{navigator.clipboard.writeText(c).then(()=>toast('Sitasi disalin'),()=>toast('Tidak dapat menyalin di sini'))}catch(e){toast('Tidak dapat menyalin di sini')}};
   $('totour').onclick=()=>{closeLB();build(a.room);$('gate').hidden=true;$('gate').style.display='none';const k=ROOMS[a.room].items.indexOf(a)+1;yaw=k*step;render();setAuto(false);document.getElementById('tur').scrollIntoView()};
 }
@@ -419,7 +426,7 @@ function openInfo(no){const a=A[no-1];last=document.activeElement;setAuto(false)
   $('ibx').innerHTML=`<button class="x2" id="imX" aria-label="Tutup">✕</button><h2 id="imT">Info</h2>
   <div class="mt">Judul: ${esc(a.t)}<br>${a.o?`Judul asli: <i>${esc(a.o)}</i><br>`:''}Pencipta / koleksi: ${esc(a.kol)} — KITLV<br>Media: ${esc(a.med)}<br>No. registrasi: ${esc(a.reg)}<br>Tahun: ${esc(yt(a))}<br>Lokasi: ${esc(a.loc)}</div>
   <p>${esc(a.ctx)}</p>${a.src?`<p style="text-align:center"><a href="${esc(a.src)}" target="_blank" rel="noopener">Sumber: buka arsip asli ↗</a></p>`:'<p style="text-align:center">Sumber belum dicantumkan dalam dokumen kurasi.</p>'}
-  <div class="acts"><button class="btn" id="imImg">Lihat gambar</button><button class="btn ghost" id="imMore">Detail &amp; sitasi</button></div>`;
+  <div class="acts"><button class="btn" id="imImg">Lihat gambar</button><button class="btn ghost" id="imMore">Detail &amp; sitasi</button></div><p class="cr">Kreator galeri: <b>Dr. Rosmaida Sinaga, M.Hum</b></p>`;
   $('imX').onclick=()=>closeInfo();$('imImg').onclick=()=>openLB(no,'solo');$('imMore').onclick=()=>openLB(no,'tour');
   $('im').classList.add('open');document.body.style.overflow='hidden';$('imX').focus()}
 function closeInfo(keep){if(!$('im').classList.contains('open'))return;$('im').classList.remove('open');if(!keep){document.body.style.overflow='';last&&last.focus&&last.focus({preventScroll:true})}}

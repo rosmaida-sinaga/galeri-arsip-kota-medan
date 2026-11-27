@@ -2,6 +2,6 @@
 
 Merawat Jejak, Menjaga Ingatan dan Melestarikan Memori Kolektif.
 
-Kurator: Rosmaida Sinaga — Jurusan Pendidikan Sejarah, FIS Universitas Negeri Medan (2026).
+Kreator: Dr. Rosmaida Sinaga, M.Hum — Jurusan Pendidikan Sejarah, FIS Universitas Negeri Medan (2026).
 
 Koleksi foto: KITLV / Leiden University Libraries Digital Collections.
